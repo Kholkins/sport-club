@@ -34,6 +34,9 @@ public class AddMemberActivity extends AppCompatActivity {
         spinnerArrayList.add("Male");
         spinnerArrayList.add("Female");
 
+        spinnerAdapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, spinnerArrayList);
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerGender.setAdapter(spinnerAdapter);
 
     }
 }
