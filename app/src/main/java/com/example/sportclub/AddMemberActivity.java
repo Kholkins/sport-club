@@ -17,7 +17,6 @@ public class AddMemberActivity extends AppCompatActivity {
     private Spinner spinnerGender;
     private int gender = 0;
     private ArrayAdapter spinnerAdapter;
-    private ArrayList spinnerArrayList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,12 +28,7 @@ public class AddMemberActivity extends AppCompatActivity {
         editTextGroup = findViewById(R.id.editTextGroup);
         spinnerGender = findViewById(R.id.spinnerGender);
 
-        spinnerArrayList = new ArrayList();
-        spinnerArrayList.add("Unknown");
-        spinnerArrayList.add("Male");
-        spinnerArrayList.add("Female");
-
-        spinnerAdapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, spinnerArrayList);
+        spinnerAdapter = ArrayAdapter.createFromResource(this,R.array.array_gender,android.R.layout.simple_spinner_item );
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerGender.setAdapter(spinnerAdapter);
 
