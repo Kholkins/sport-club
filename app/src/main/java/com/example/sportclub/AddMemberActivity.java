@@ -50,7 +50,7 @@ public class AddMemberActivity extends AppCompatActivity {
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-
+                gender = 0;
             }
         });
     }
