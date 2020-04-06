@@ -3,6 +3,9 @@ package com.example.sportclub;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -32,5 +35,23 @@ public class AddMemberActivity extends AppCompatActivity {
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerGender.setAdapter(spinnerAdapter);
 
+        spinnerGender.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String selectedGender = (String) parent.getItemAtPosition(position);
+                if (!TextUtils.isEmpty(selectedGender)){
+                    if (selectedGender.equals("Male")){
+                        gender = 1;
+                    }else if (selectedGender.equals("Female")){
+                        gender = 2;
+                    }else gender = 0;
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
     }
 }
