@@ -1,5 +1,6 @@
 package com.example.sportclub.data;
 
+import android.net.Uri;
 import android.provider.BaseColumns;
 
 public final class SportClubContract implements BaseColumns {
@@ -8,6 +9,12 @@ public final class SportClubContract implements BaseColumns {
 
     public static final int DATABASE_VERSION =1;
     public static final String DATABASE_NAME = "club";
+
+    public static final String SCHEME = "content://";
+    public static final String AUTHORITY = "com.example.sportclub";
+    public static final String PATH_MEMBERS = "members";
+
+    public static final Uri BASE_CONTENT_URI = Uri.parse(SCHEME + AUTHORITY);
 
     public final static class MemberEntry{
         public static final String _NAME = "members";
