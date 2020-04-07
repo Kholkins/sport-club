@@ -34,6 +34,12 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        displayData();
+    }
+
     private void displayData(){
         String[] projection = {
                 MemberEntry.COLUMN_ID,
@@ -52,9 +58,25 @@ public class MainActivity extends AppCompatActivity {
                 MemberEntry.COLUMN_SPORT);
 
         int idIndex = cursor.getColumnIndex(MemberEntry.COLUMN_ID);
-        int idFirstName = cursor.getColumnIndex(MemberEntry.COLUMN_FIRST_NAME);
-        int idLastName = cursor.getColumnIndex(MemberEntry.COLUMN_LAST_NAME);
-        int idGender = cursor.getColumnIndex(MemberEntry.COLUMN_GENDER);
-        int idSport = cursor.getColumnIndex(MemberEntry.COLUMN_SPORT);
+        int firstNameIndex = cursor.getColumnIndex(MemberEntry.COLUMN_FIRST_NAME);
+        int lastNameIndex = cursor.getColumnIndex(MemberEntry.COLUMN_LAST_NAME);
+        int genderIndex = cursor.getColumnIndex(MemberEntry.COLUMN_GENDER);
+        int sportIndex = cursor.getColumnIndex(MemberEntry.COLUMN_SPORT);
+
+        while (cursor.moveToNext()){
+            int currentId = cursor.getInt(idIndex);
+            String currentFirstName = cursor.getString(firstNameIndex);
+            String currentLastName = cursor.getString(lastNameIndex);
+            int currentGender = cursor.getInt(genderIndex);
+            String currentSport =cursor.getString(sportIndex);
+
+            textViewData.append("/n"+
+                    currentId +" "+
+                    currentFirstName +" "+
+                    currentLastName +" "+
+                    currentGender +" "+
+                    currentSport);
+        }
+        cursor.close();
     }
 }
