@@ -20,7 +20,7 @@ public class AddMemberActivity extends AppCompatActivity {
 
     private EditText editTextFirstName;
     private EditText editTextLastName;
-    private EditText editTextGroup;
+    private EditText editTextSport;
     private Spinner spinnerGender;
     private int gender = 0;
     private ArrayAdapter spinnerAdapter;
@@ -32,7 +32,7 @@ public class AddMemberActivity extends AppCompatActivity {
 
         editTextFirstName = findViewById(R.id.editTextFirstName);
         editTextLastName = findViewById(R.id.editTextLastName);
-        editTextGroup = findViewById(R.id.editTextGroup);
+        editTextSport = findViewById(R.id.editTextSport);
         spinnerGender = findViewById(R.id.spinnerGender);
 
         spinnerAdapter = ArrayAdapter.createFromResource(this,R.array.array_gender,android.R.layout.simple_spinner_item );
@@ -79,5 +79,11 @@ public class AddMemberActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void insertMember(){
+        String firstName = editTextFirstName.getText().toString().trim();
+        String lastName = editTextLastName.getText().toString().trim();
+        String sport = editTextSport.getText().toString().trim();
     }
 }
