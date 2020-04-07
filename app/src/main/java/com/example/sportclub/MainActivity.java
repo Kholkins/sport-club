@@ -3,6 +3,7 @@ package com.example.sportclub;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.sax.StartElementListener;
 import android.view.View;
@@ -41,6 +42,19 @@ public class MainActivity extends AppCompatActivity {
                 MemberEntry.COLUMN_GENDER,
                 MemberEntry.COLUMN_SPORT
         };
-        getContentResolver().query(MemberEntry.CONTENT_URI,projection,null ,null,null);
+        Cursor cursor = getContentResolver().query(MemberEntry.CONTENT_URI,projection,null ,null,null);
+
+        textViewData.setText("All members/n/n");
+        textViewData.append(MemberEntry.COLUMN_ID +" "+
+                MemberEntry.COLUMN_FIRST_NAME +" "+
+                MemberEntry.COLUMN_LAST_NAME +" "+
+                MemberEntry.COLUMN_GENDER +" "+
+                MemberEntry.COLUMN_SPORT);
+
+        int idIndex = cursor.getColumnIndex(MemberEntry.COLUMN_ID);
+        int idFirstName = cursor.getColumnIndex(MemberEntry.COLUMN_FIRST_NAME);
+        int idLastName = cursor.getColumnIndex(MemberEntry.COLUMN_LAST_NAME);
+        int idGender = cursor.getColumnIndex(MemberEntry.COLUMN_GENDER);
+        int idSport = cursor.getColumnIndex(MemberEntry.COLUMN_SPORT);
     }
 }
