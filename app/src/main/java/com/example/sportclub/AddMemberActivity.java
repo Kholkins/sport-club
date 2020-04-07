@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NavUtils;
 
+import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -91,5 +92,9 @@ public class AddMemberActivity extends AppCompatActivity {
         contentValues.put(MemberEntry.COLUMN_FIRST_NAME, firstName);
         contentValues.put(MemberEntry.COLUMN_LAST_NAME, lastName);
         contentValues.put(MemberEntry.COLUMN_SPORT, sport);
+        contentValues.put(MemberEntry.COLUMN_GENDER, gender);
+
+        ContentResolver contentResolver = getContentResolver();
+        contentResolver.insert(MemberEntry.CONTENT_URI,contentValues);
     }
 }
