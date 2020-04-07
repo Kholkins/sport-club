@@ -6,6 +6,7 @@ import androidx.core.app.NavUtils;
 
 import android.content.ContentResolver;
 import android.content.ContentValues;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.Menu;
@@ -15,6 +16,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.example.sportclub.data.SportClubContract.MemberEntry;
 
@@ -95,6 +97,9 @@ public class AddMemberActivity extends AppCompatActivity {
         contentValues.put(MemberEntry.COLUMN_GENDER, gender);
 
         ContentResolver contentResolver = getContentResolver();
-        contentResolver.insert(MemberEntry.CONTENT_URI,contentValues);
+        Uri uri = contentResolver.insert(MemberEntry.CONTENT_URI,contentValues);
+        if (uri==null){
+            Toast.makeText(this,"insert: failed",Toast.LENGTH_LONG).show();
+        }else Toast.makeText(this,"Data saved",Toast.LENGTH_LONG).show();
     }
 }
