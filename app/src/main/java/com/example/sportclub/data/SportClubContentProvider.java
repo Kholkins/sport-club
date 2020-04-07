@@ -7,6 +7,7 @@ import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.example.sportclub.data.SportClubContract.MemberEntry;
@@ -70,7 +71,10 @@ public class SportClubContentProvider extends ContentProvider {
         int match = uriMatcher.match(uri);
         switch (match){
             case MEMBERS:
-                db.insert(MemberEntry._NAME,null,values);
+                long id = db.insert(MemberEntry._NAME,null,values);
+                if (id == -1){
+                    Log.e("Insert method", "insert: failed "+uri );
+                }
                 break;
             default:
                 Toast.makeText(getContext(),"Incorrect URI", Toast.LENGTH_LONG).show();
