@@ -1,11 +1,13 @@
 package com.example.sportclub.data;
 
 import android.content.ContentProvider;
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
+import android.widget.Toast;
 
 import com.example.sportclub.data.SportClubContract.MemberEntry;
 
@@ -44,12 +46,15 @@ public class SportClubContentProvider extends ContentProvider {
                 cursor = db.query(MemberEntry._NAME,projection,selection,selectionArgs,null,null,sortOrder);
                 break;
             case MEMBER_ID:
-
+                selection = MemberEntry.COLUMN_ID+"=?";
+                selectionArgs = new String[] {String.valueOf(ContentUris.parseId(uri))};
+                cursor = db.query(MemberEntry._NAME,projection,selection,selectionArgs,null,null,sortOrder);
                 break;
             default:
-
+                Toast.makeText(getContext(),"Incorrect URI", Toast.LENGTH_LONG).show();
+                throw new IllegalArgumentException("Can't query incorrect URI "+uri);
         }
-        return null;
+        return cursor;
     }
 
 
@@ -61,6 +66,7 @@ public class SportClubContentProvider extends ContentProvider {
 
     @Override
     public Uri insert( Uri uri,  ContentValues values) {
+        SQLiteDatabase db = dbOpenHelper.getWritableDatabase();
         return null;
     }
 
