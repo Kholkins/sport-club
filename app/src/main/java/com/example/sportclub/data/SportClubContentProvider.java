@@ -74,7 +74,9 @@ public class SportClubContentProvider extends ContentProvider {
                 long id = db.insert(MemberEntry._NAME,null,values);
                 if (id == -1){
                     Log.e("Insert method", "insert: failed "+uri );
+                    return null;
                 }
+                ContentUris.withAppendedId(uri,id);
                 break;
             default:
                 Toast.makeText(getContext(),"Incorrect URI", Toast.LENGTH_LONG).show();
