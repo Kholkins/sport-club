@@ -4,6 +4,7 @@ import android.content.ContentProvider;
 import android.content.ContentValues;
 import android.content.UriMatcher;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 
 import com.example.sportclub.data.SportClubContract.MemberEntry;
@@ -34,6 +35,10 @@ public class SportClubContentProvider extends ContentProvider {
 
     @Override
     public Cursor query( Uri uri, String[] projection, String selection,  String[] selectionArgs, String sortOrder) {
+        SQLiteDatabase db = dbOpenHelper.getReadableDatabase();
+        Cursor cursor;
+
+        int match = uriMatcher.match(uri);
         return null;
     }
 
