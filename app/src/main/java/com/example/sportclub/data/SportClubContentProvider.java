@@ -52,7 +52,6 @@ public class SportClubContentProvider extends ContentProvider {
                 cursor = db.query(MemberEntry._NAME,projection,selection,selectionArgs,null,null,sortOrder);
                 break;
             default:
-                Toast.makeText(getContext(),"Incorrect URI", Toast.LENGTH_LONG).show();
                 throw new IllegalArgumentException("Can't query incorrect URI "+uri);
         }
         return cursor;
@@ -79,7 +78,6 @@ public class SportClubContentProvider extends ContentProvider {
                 ContentUris.withAppendedId(uri,id);
                 break;
             default:
-                Toast.makeText(getContext(),"Incorrect URI", Toast.LENGTH_LONG).show();
                 throw new IllegalArgumentException("Can't query incorrect URI "+uri);
         }
         return null;
