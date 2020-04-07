@@ -67,6 +67,16 @@ public class SportClubContentProvider extends ContentProvider {
     @Override
     public Uri insert( Uri uri,  ContentValues values) {
         SQLiteDatabase db = dbOpenHelper.getWritableDatabase();
+        int match = uriMatcher.match(uri);
+        switch (match){
+            case MEMBERS:
+
+                break;
+
+            default:
+                Toast.makeText(getContext(),"Incorrect URI", Toast.LENGTH_LONG).show();
+                throw new IllegalArgumentException("Can't query incorrect URI "+uri);
+        }
         return null;
     }
 
