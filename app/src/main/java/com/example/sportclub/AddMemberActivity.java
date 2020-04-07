@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NavUtils;
 
+import android.content.ContentValues;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.Menu;
@@ -85,5 +86,10 @@ public class AddMemberActivity extends AppCompatActivity {
         String firstName = editTextFirstName.getText().toString().trim();
         String lastName = editTextLastName.getText().toString().trim();
         String sport = editTextSport.getText().toString().trim();
+
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(MemberEntry.COLUMN_FIRST_NAME, firstName);
+        contentValues.put(MemberEntry.COLUMN_LAST_NAME, lastName);
+        contentValues.put(MemberEntry.COLUMN_SPORT, sport);
     }
 }
