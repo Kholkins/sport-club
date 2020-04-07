@@ -73,6 +73,7 @@ public class AddMemberActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
             case R.id.save_member:
+                insertMember();
                 return true;
             case R.id. delete_member:
                 return true;
