@@ -70,9 +70,8 @@ public class SportClubContentProvider extends ContentProvider {
         int match = uriMatcher.match(uri);
         switch (match){
             case MEMBERS:
-
+                db.insert(MemberEntry._NAME,null,values);
                 break;
-
             default:
                 Toast.makeText(getContext(),"Incorrect URI", Toast.LENGTH_LONG).show();
                 throw new IllegalArgumentException("Can't query incorrect URI "+uri);
