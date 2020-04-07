@@ -39,6 +39,16 @@ public class SportClubContentProvider extends ContentProvider {
         Cursor cursor;
 
         int match = uriMatcher.match(uri);
+        switch (match){
+            case MEMBERS:
+                cursor = db.query(MemberEntry._NAME,projection,selection,selectionArgs,null,null,sortOrder);
+                break;
+            case MEMBER_ID:
+
+                break;
+            default:
+
+        }
         return null;
     }
 
