@@ -1,7 +1,11 @@
 package com.example.sportclub;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cursoradapter.widget.CursorAdapter;
+import androidx.loader.app.LoaderManager;
+import androidx.loader.content.Loader;
 
 import android.content.Context;
 import android.content.Intent;
@@ -17,9 +21,11 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import com.example.sportclub.data.SportClubContract.MemberEntry;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
     ListView listViewData;
+
+    private static final int MEMBER_LOADER =123;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +63,22 @@ public class MainActivity extends AppCompatActivity {
         MemberCursorAdapter cursorAdapter = new MemberCursorAdapter(this,cursor,false);
         listViewData.setAdapter(cursorAdapter);
 
+
+    }
+
+    @NonNull
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, @Nullable Bundle args) {
+        return null;
+    }
+
+    @Override
+    public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor data) {
+
+    }
+
+    @Override
+    public void onLoaderReset(@NonNull Loader<Cursor> loader) {
 
     }
 }
