@@ -175,7 +175,7 @@ public class AddMemberActivity extends AppCompatActivity implements LoaderManage
 
         }
 
-
+        finish();
     }
 
     @NonNull
