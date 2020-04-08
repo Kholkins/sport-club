@@ -7,8 +7,10 @@ import androidx.loader.app.LoaderManager;
 import androidx.loader.content.CursorLoader;
 import androidx.loader.content.Loader;
 
+import android.content.ContentUris;
 import android.content.Intent;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -47,6 +49,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(MainActivity.this,AddMemberActivity.class);
+                Uri currentMemberURI = ContentUris.withAppendedId(MemberEntry.CONTENT_URI, id);
             }
         });
 
