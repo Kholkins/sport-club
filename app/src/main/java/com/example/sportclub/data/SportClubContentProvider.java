@@ -54,6 +54,8 @@ public class SportClubContentProvider extends ContentProvider {
             default:
                 throw new IllegalArgumentException("Can't query incorrect URI "+uri);
         }
+        cursor.setNotificationUri(getContext().getContentResolver(), uri);
+
         return cursor;
     }
 
@@ -103,12 +105,13 @@ public class SportClubContentProvider extends ContentProvider {
                     Log.e("Insert method", "insert: failed "+uri );
                     return null;
                 }
-                ContentUris.withAppendedId(uri,id);
-                break;
+                getContext().getContentResolver().notifyChange(uri,
+                        null);
+
+                return ContentUris.withAppendedId(uri, id);
             default:
                 throw new IllegalArgumentException("Can't query incorrect URI "+uri);
         }
-        return null;
     }
 
     @Override
@@ -116,16 +119,37 @@ public class SportClubContentProvider extends ContentProvider {
         SQLiteDatabase db = dbOpenHelper.getWritableDatabase();
 
         int match = uriMatcher.match(uri);
+
+        int rowsDeleted;
+
         switch (match){
             case MEMBERS:
-                return db.delete(MemberEntry._NAME,selection,selectionArgs);
+
+                rowsDeleted = db.delete(MemberEntry._NAME, selection,
+                        selectionArgs);
+                break;
+
+            // selection = "_id=?"
+            // selectionArgs = 34
             case MEMBER_ID:
-                selection = MemberEntry.COLUMN_ID+"=?";
-                selectionArgs = new String[] {String.valueOf(ContentUris.parseId(uri))};
-                return db.delete(MemberEntry._NAME,selection,selectionArgs);
+                selection = MemberEntry.COLUMN_ID + "=?";
+                selectionArgs = new String[]
+                        {String.valueOf(ContentUris.parseId(uri))};
+                rowsDeleted = db.delete(MemberEntry._NAME, selection,
+                        selectionArgs);
+                break;
+
             default:
-                throw new IllegalArgumentException("Can't query incorrect URI "+uri);
+                throw new IllegalArgumentException("Can't delete this URI "
+                        + uri);
+
         }
+
+        if (rowsDeleted != 0) {
+            getContext().getContentResolver().notifyChange(uri, null);
+        }
+
+        return rowsDeleted;
     }
 
     @Override
@@ -163,16 +187,31 @@ public class SportClubContentProvider extends ContentProvider {
         SQLiteDatabase db = dbOpenHelper.getWritableDatabase();
 
         int match = uriMatcher.match(uri);
+        int rowsUpdated;
         switch (match){
             case MEMBERS:
-                return db.update(MemberEntry._NAME,values,selection,selectionArgs);
+                rowsUpdated = db.update(MemberEntry._NAME, values,
+                        selection, selectionArgs);
+                break;
             case MEMBER_ID:
-                selection = MemberEntry.COLUMN_ID+"=?";
-                selectionArgs = new String[] {String.valueOf(ContentUris.parseId(uri))};
-                return db.update(MemberEntry._NAME,values,selection,selectionArgs);
+                selection = MemberEntry.COLUMN_ID + "=?";
+                selectionArgs = new String[]
+                        {String.valueOf(ContentUris.parseId(uri))};
+                rowsUpdated = db.update(MemberEntry._NAME, values,
+                        selection, selectionArgs);
+
+                break;
+
             default:
-                throw new IllegalArgumentException("Can't query incorrect URI "+uri);
+                throw new IllegalArgumentException("Can't update this URI "
+                        + uri);
+
         }
 
+        if (rowsUpdated != 0) {
+            getContext().getContentResolver().notifyChange(uri, null);
+        }
+
+        return rowsUpdated;
     }
 }
