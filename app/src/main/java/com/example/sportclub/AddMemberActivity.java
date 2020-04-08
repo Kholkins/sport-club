@@ -49,9 +49,10 @@ public class AddMemberActivity extends AppCompatActivity implements LoaderManage
         currentMemberURI = intent.getData();
         if(currentMemberURI==null){
             setTitle("Add a Member");
-        }else setTitle("Edit the Member");
-
-        getSupportLoaderManager().initLoader(EDIT_MEMBER_LOADER,null,this);
+        }else {
+            setTitle("Edit the Member");
+            getSupportLoaderManager().initLoader(EDIT_MEMBER_LOADER,null,this);
+        }
 
         editTextFirstName = findViewById(R.id.editTextFirstName);
         editTextLastName = findViewById(R.id.editTextLastName);
@@ -92,9 +93,10 @@ public class AddMemberActivity extends AppCompatActivity implements LoaderManage
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
             case R.id.save_member:
-                insertMember();
+                saveMember();
                 return true;
             case R.id. delete_member:
+                showDeleteMemberDialog();
                 return true;
             case android.R.id.home:
                 NavUtils.navigateUpFromSameTask(this);
@@ -105,10 +107,32 @@ public class AddMemberActivity extends AppCompatActivity implements LoaderManage
         return super.onOptionsItemSelected(item);
     }
 
-    private void insertMember(){
+    private void saveMember(){
         String firstName = editTextFirstName.getText().toString().trim();
         String lastName = editTextLastName.getText().toString().trim();
         String sport = editTextSport.getText().toString().trim();
+
+        if (TextUtils.isEmpty(firstName)) {
+            Toast.makeText(this,
+                    "Input the first name",
+                    Toast.LENGTH_LONG).show();
+            return;
+        } else if (TextUtils.isEmpty(lastName)) {
+            Toast.makeText(this,
+                    "Input the last name",
+                    Toast.LENGTH_LONG).show();
+            return;
+        } else if (TextUtils.isEmpty(sport)) {
+            Toast.makeText(this,
+                    "Input the sport",
+                    Toast.LENGTH_LONG).show();
+            return;
+        } else if (gender == MemberEntry.GENDER_UNKNOWN) {
+            Toast.makeText(this,
+                    "Choose the gender",
+                    Toast.LENGTH_LONG).show();
+            return;
+        }
 
         ContentValues contentValues = new ContentValues();
         contentValues.put(MemberEntry.COLUMN_FIRST_NAME, firstName);
@@ -116,11 +140,29 @@ public class AddMemberActivity extends AppCompatActivity implements LoaderManage
         contentValues.put(MemberEntry.COLUMN_SPORT, sport);
         contentValues.put(MemberEntry.COLUMN_GENDER, gender);
 
-        ContentResolver contentResolver = getContentResolver();
-        Uri uri = contentResolver.insert(MemberEntry.CONTENT_URI,contentValues);
-        if (uri==null){
-            Toast.makeText(this,"insert: failed",Toast.LENGTH_LONG).show();
-        }else Toast.makeText(this,"Data saved",Toast.LENGTH_LONG).show();
+        if(currentMemberURI==null){
+
+            ContentResolver contentResolver = getContentResolver();
+            Uri uri = contentResolver.insert(MemberEntry.CONTENT_URI,contentValues);
+            if (uri==null){
+                Toast.makeText(this,"insert: failed",Toast.LENGTH_LONG).show();
+            }else Toast.makeText(this,"Data saved",Toast.LENGTH_LONG).show();
+
+        }else{
+            int rowsChanged = getContentResolver().update(currentMemberURI,contentValues,null,null);
+
+            if (rowsChanged == 0) {
+                Toast.makeText(this,
+                        "Saving of data in the table failed",
+                        Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(this,
+                        "Member updated", Toast.LENGTH_LONG).show();
+            }
+
+        }
+
+
     }
 
     @NonNull
