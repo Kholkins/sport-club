@@ -2,13 +2,16 @@ package com.example.sportclub;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NavUtils;
 import androidx.loader.app.LoaderManager;
+import androidx.loader.content.CursorLoader;
 import androidx.loader.content.Loader;
 
 import android.content.ContentResolver;
 import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -34,16 +37,21 @@ public class AddMemberActivity extends AppCompatActivity implements LoaderManage
     private int gender = 0;
     private ArrayAdapter spinnerAdapter;
 
+    private static final int EDIT_MEMBER_LOADER=111;
+    Uri currentMemberURI;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_member);
 
         Intent intent = getIntent();
-        Uri currentMemberURI = intent.getData();
+        currentMemberURI = intent.getData();
         if(currentMemberURI==null){
             setTitle("Add a Member");
         }else setTitle("Edit the Member");
+
+        getSupportLoaderManager().initLoader(EDIT_MEMBER_LOADER,null,this);
 
         editTextFirstName = findViewById(R.id.editTextFirstName);
         editTextLastName = findViewById(R.id.editTextLastName);
@@ -118,16 +126,102 @@ public class AddMemberActivity extends AppCompatActivity implements LoaderManage
     @NonNull
     @Override
     public Loader<Cursor> onCreateLoader(int id, @Nullable Bundle args) {
-        return null;
+
+        String[] projection = {
+                MemberEntry.COLUMN_ID,
+                MemberEntry.COLUMN_FIRST_NAME,
+                MemberEntry.COLUMN_LAST_NAME,
+                MemberEntry.COLUMN_GENDER,
+                MemberEntry.COLUMN_SPORT
+        };
+
+        return new CursorLoader(this,currentMemberURI,projection,null ,null,null);
     }
 
     @Override
     public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor data) {
+        if (data.moveToFirst()) {
+            int firstNameColumnIndex = data.getColumnIndex(
+                    MemberEntry.COLUMN_FIRST_NAME
+            );
+            int lastNameColumnIndex = data.getColumnIndex(
+                    MemberEntry.COLUMN_LAST_NAME
+            );
+            int genderColumnIndex = data.getColumnIndex(
+                    MemberEntry.COLUMN_GENDER
+            );
+            int sportColumnIndex = data.getColumnIndex(
+                    MemberEntry.COLUMN_SPORT
+            );
 
+            String firstName = data.getString(firstNameColumnIndex);
+            String lastName = data.getString(lastNameColumnIndex);
+            int gender = data.getInt(genderColumnIndex);
+            String sport = data.getString(sportColumnIndex);
+
+            editTextFirstName.setText(firstName);
+            editTextLastName.setText(lastName);
+            editTextSport.setText(sport);
+
+            switch (gender) {
+                case MemberEntry.GENDER_MALE:
+                    spinnerGender.setSelection(1);
+                    break;
+                case MemberEntry.GENDER_FEMALE:
+                    spinnerGender.setSelection(2);
+                    break;
+                case MemberEntry.GENDER_UNKNOWN:
+                    spinnerGender.setSelection(0);
+                    break;
+            }
+        }
     }
 
     @Override
     public void onLoaderReset(@NonNull Loader<Cursor> loader) {
 
+    }
+
+    private void showDeleteMemberDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Do you want delete the member?");
+        builder.setPositiveButton("Delete",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        deleteMember();
+                    }
+                });
+        builder.setNegativeButton("Cancel",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if (dialog != null) {
+                            dialog.dismiss();
+                        }
+                    }
+                });
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+
+    private void deleteMember() {
+        if (currentMemberURI != null) {
+            int rowsDeleted = getContentResolver().delete(currentMemberURI,
+                    null, null);
+
+            if (rowsDeleted == 0) {
+                Toast.makeText(this,
+                        "Deleting of data from the table failed",
+                        Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(this,
+                        "Member is deleted",
+                        Toast.LENGTH_LONG).show();
+            }
+
+            finish();
+
+        }
     }
 }
