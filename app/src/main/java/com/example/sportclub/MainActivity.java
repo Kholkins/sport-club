@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
         };
         Cursor cursor = getContentResolver().query(MemberEntry.CONTENT_URI,projection,null ,null,null);
 
-        textViewData.setText("All members/n/n");
+        textViewData.setText("All members \n\n");
         textViewData.append(MemberEntry.COLUMN_ID +" "+
                 MemberEntry.COLUMN_FIRST_NAME +" "+
                 MemberEntry.COLUMN_LAST_NAME +" "+
@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
             int currentGender = cursor.getInt(genderIndex);
             String currentSport =cursor.getString(sportIndex);
 
-            textViewData.append("/n"+
+            textViewData.append("\n"+
                     currentId +" "+
                     currentFirstName +" "+
                     currentLastName +" "+
