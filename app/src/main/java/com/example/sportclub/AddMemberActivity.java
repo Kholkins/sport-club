@@ -1,12 +1,16 @@
 package com.example.sportclub;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NavUtils;
+import androidx.loader.app.LoaderManager;
+import androidx.loader.content.Loader;
 
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -21,7 +25,7 @@ import android.widget.Toast;
 
 import com.example.sportclub.data.SportClubContract.MemberEntry;
 
-public class AddMemberActivity extends AppCompatActivity {
+public class AddMemberActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private EditText editTextFirstName;
     private EditText editTextLastName;
@@ -109,5 +113,21 @@ public class AddMemberActivity extends AppCompatActivity {
         if (uri==null){
             Toast.makeText(this,"insert: failed",Toast.LENGTH_LONG).show();
         }else Toast.makeText(this,"Data saved",Toast.LENGTH_LONG).show();
+    }
+
+    @NonNull
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, @Nullable Bundle args) {
+        return null;
+    }
+
+    @Override
+    public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor data) {
+
+    }
+
+    @Override
+    public void onLoaderReset(@NonNull Loader<Cursor> loader) {
+
     }
 }
