@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -42,6 +43,12 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
         memberCursorAdapter = new MemberCursorAdapter(this,null, false);
         listViewData.setAdapter(memberCursorAdapter);
+        listViewData.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(MainActivity.this,AddMemberActivity.class);
+            }
+        });
 
         getSupportLoaderManager().initLoader(MEMBER_LOADER,null,this);
     }
