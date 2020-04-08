@@ -50,6 +50,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(MainActivity.this,AddMemberActivity.class);
                 Uri currentMemberURI = ContentUris.withAppendedId(MemberEntry.CONTENT_URI, id);
+                intent.setData(currentMemberURI);
+                startActivity(intent);
             }
         });
 
